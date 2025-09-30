@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/withdrawals/check-conditions",
+      "schedule": "0 0 * * *"
+    }
+  ]
+}

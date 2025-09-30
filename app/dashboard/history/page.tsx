@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { createClient } from "@/lib/supabase/server"
 import { Badge } from "@/components/ui/badge"
+import { getCryptoPrices } from "@/lib/crypto-prices"
 
 export default async function HistoryPage() {
   const supabase = await createClient()
@@ -10,6 +11,8 @@ export default async function HistoryPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser()
+
+  const prices = await getCryptoPrices()
 
   // Fetch all deposits
   const { data: deposits } = await supabase
@@ -51,13 +54,17 @@ export default async function HistoryPage() {
                       const now = new Date()
                       const daysElapsed = Math.floor((now.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
 
+                      const price = prices[stake.currency.toLowerCase()] || 1
+                      const stakeAmount = Number.parseFloat(stake.amount.toString())
+                      const rewardsAmount = Number.parseFloat(stake.rewards_earned.toString())
+
                       return (
                         <div key={stake.id} className="rounded-lg border border-border bg-card p-4 space-y-3">
                           <div className="flex items-start justify-between">
                             <div className="space-y-1">
                               <div className="flex items-center gap-2">
                                 <span className="font-semibold text-lg">
-                                  {Number.parseFloat(stake.amount.toString()).toFixed(8)} {stake.currency}
+                                  {stakeAmount.toFixed(8)} {stake.currency}
                                 </span>
                                 <Badge
                                   variant={
@@ -70,6 +77,9 @@ export default async function HistoryPage() {
                                 >
                                   {stake.status}
                                 </Badge>
+                              </div>
+                              <div className="text-sm text-muted-foreground">
+                                ≈ ${(stakeAmount * price).toFixed(2)} USD
                               </div>
                               <div className="text-sm text-muted-foreground">
                                 Started {startDate.toLocaleDateString()}
@@ -95,7 +105,10 @@ export default async function HistoryPage() {
                             <div>
                               <div className="text-xs text-muted-foreground">Rewards Earned</div>
                               <div className="text-sm font-semibold text-primary">
-                                {Number.parseFloat(stake.rewards_earned.toString()).toFixed(8)} {stake.currency}
+                                {rewardsAmount.toFixed(8)} {stake.currency}
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                ≈ ${(rewardsAmount * price).toFixed(2)} USD
                               </div>
                             </div>
                             {endDate && (
@@ -127,44 +140,50 @@ export default async function HistoryPage() {
               <CardContent>
                 {deposits && deposits.length > 0 ? (
                   <div className="space-y-4">
-                    {deposits.map((deposit) => (
-                      <div
-                        key={deposit.id}
-                        className="flex items-center justify-between rounded-lg border border-border bg-card p-4"
-                      >
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2">
-                            <span className="font-semibold">{deposit.currency}</span>
-                            <Badge
-                              variant={
-                                deposit.status === "confirmed"
-                                  ? "default"
-                                  : deposit.status === "pending"
-                                    ? "secondary"
-                                    : "destructive"
-                              }
-                            >
-                              {deposit.status}
-                            </Badge>
-                          </div>
-                          <div className="text-sm text-muted-foreground">
-                            {new Date(deposit.created_at).toLocaleDateString()} at{" "}
-                            {new Date(deposit.created_at).toLocaleTimeString()}
-                          </div>
-                          {deposit.tx_hash && (
-                            <div className="text-xs text-muted-foreground font-mono">
-                              TX: {deposit.tx_hash.slice(0, 32)}...
+                    {deposits.map((deposit) => {
+                      const price = prices[deposit.currency.toLowerCase()] || 1
+                      const depositAmount = Number.parseFloat(deposit.amount.toString())
+
+                      return (
+                        <div
+                          key={deposit.id}
+                          className="flex items-center justify-between rounded-lg border border-border bg-card p-4"
+                        >
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold">{deposit.currency}</span>
+                              <Badge
+                                variant={
+                                  deposit.status === "confirmed"
+                                    ? "default"
+                                    : deposit.status === "pending"
+                                      ? "secondary"
+                                      : "destructive"
+                                }
+                              >
+                                {deposit.status}
+                              </Badge>
                             </div>
-                          )}
-                        </div>
-                        <div className="text-right">
-                          <div className="text-xl font-bold">
-                            {Number.parseFloat(deposit.amount.toString()).toFixed(8)}
+                            <div className="text-sm text-muted-foreground">
+                              {new Date(deposit.created_at).toLocaleDateString()} at{" "}
+                              {new Date(deposit.created_at).toLocaleTimeString()}
+                            </div>
+                            {deposit.tx_hash && (
+                              <div className="text-xs text-muted-foreground font-mono">
+                                TX: {deposit.tx_hash.slice(0, 32)}...
+                              </div>
+                            )}
                           </div>
-                          <div className="text-sm text-muted-foreground">{deposit.currency}</div>
+                          <div className="text-right">
+                            <div className="text-xl font-bold">{depositAmount.toFixed(8)}</div>
+                            <div className="text-sm text-muted-foreground">{deposit.currency}</div>
+                            <div className="text-sm text-muted-foreground">
+                              ≈ ${(depositAmount * price).toFixed(2)} USD
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      )
+                    })}
                   </div>
                 ) : (
                   <div className="text-center py-8 text-muted-foreground">

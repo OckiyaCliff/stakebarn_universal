@@ -6,6 +6,7 @@ import { PLATFORM_WALLETS, CURRENCY_INFO, type Currency } from "@/lib/constants"
 import { AlertCircle } from "lucide-react"
 import { WalletAddressCard } from "@/components/wallet-address-card"
 import { createClient } from "@/lib/supabase/server"
+import { DepositSubmissionForm } from "@/components/deposit-submission-form"
 
 export default async function DepositPage() {
   const supabase = await createClient()
@@ -84,9 +85,9 @@ export default async function DepositPage() {
                         3
                       </div>
                       <div>
-                        <p className="font-medium">Wait for blockchain confirmation</p>
+                        <p className="font-medium">Submit your deposit details below</p>
                         <p className="text-sm text-muted-foreground">
-                          Your deposit will appear in your balance once confirmed on the blockchain
+                          Fill out the form below with your deposit information for faster verification
                         </p>
                       </div>
                     </div>
@@ -96,9 +97,9 @@ export default async function DepositPage() {
                         4
                       </div>
                       <div>
-                        <p className="font-medium">Start staking</p>
+                        <p className="font-medium">Wait for admin approval</p>
                         <p className="text-sm text-muted-foreground">
-                          Once your deposit is confirmed, you can start staking and earning rewards
+                          Your deposit will be reviewed and approved by our team, then added to your balance
                         </p>
                       </div>
                     </div>
@@ -108,6 +109,8 @@ export default async function DepositPage() {
             </TabsContent>
           ))}
         </Tabs>
+
+        <DepositSubmissionForm />
 
         {/* Recent Deposits */}
         <Card>

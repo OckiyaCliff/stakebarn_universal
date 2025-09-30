@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, Wallet, TrendingUp, History, LogOut } from "lucide-react"
+import { LayoutDashboard, Wallet, TrendingUp, History, LogOut, ArrowDownToLine } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation"
 const navigation = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { name: "Deposit", href: "/dashboard/deposit", icon: Wallet },
+  { name: "Withdraw", href: "/dashboard/withdraw", icon: ArrowDownToLine },
   { name: "Stake", href: "/dashboard/stake", icon: TrendingUp },
   { name: "History", href: "/dashboard/history", icon: History },
 ]

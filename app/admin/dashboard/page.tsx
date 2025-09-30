@@ -1,26 +1,33 @@
 import { createClient } from "@/lib/supabase/server"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Users, Wallet, TrendingUp, DollarSign } from "lucide-react"
+import { fetchCryptoPrices, convertToUSD, formatUSD } from "@/lib/crypto-prices"
 
 export default async function AdminDashboardPage() {
   const supabase = await createClient()
 
+  const prices = await fetchCryptoPrices()
+
   // Fetch statistics
-  const [{ count: totalUsers }, { count: totalDeposits }, { count: activeStakes }, { data: totalVolume }] =
+  const [{ count: totalUsers }, { count: totalDeposits }, { count: activeStakes }, { data: deposits }] =
     await Promise.all([
       supabase.from("profiles").select("*", { count: "exact", head: true }),
       supabase.from("deposits").select("*", { count: "exact", head: true }).eq("status", "confirmed"),
       supabase.from("stakes").select("*", { count: "exact", head: true }).eq("status", "active"),
-      supabase.from("deposits").select("amount").eq("status", "confirmed"),
+      supabase.from("deposits").select("amount, currency").eq("status", "confirmed"),
     ])
 
-  const volume = totalVolume?.reduce((sum, d) => sum + Number(d.amount), 0) || 0
+  const volume =
+    deposits?.reduce((sum, deposit) => {
+      const usdValue = convertToUSD(Number(deposit.amount), deposit.currency, prices)
+      return sum + usdValue
+    }, 0) || 0
 
   const stats = [
     { name: "Total Users", value: totalUsers || 0, icon: Users, color: "text-blue-500" },
     { name: "Total Deposits", value: totalDeposits || 0, icon: Wallet, color: "text-emerald-500" },
     { name: "Active Stakes", value: activeStakes || 0, icon: TrendingUp, color: "text-purple-500" },
-    { name: "Total Volume", value: `$${volume.toFixed(2)}`, icon: DollarSign, color: "text-yellow-500" },
+    { name: "Total Volume", value: formatUSD(volume), icon: DollarSign, color: "text-yellow-500" },
   ]
 
   return (

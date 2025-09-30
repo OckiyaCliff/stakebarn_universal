@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { createClient } from "@/lib/supabase/server"
 import { CURRENCY_INFO, type Currency } from "@/lib/constants"
 import { StakingPlanCard } from "@/components/staking-plan-card"
+import { getCryptoPrices } from "@/lib/crypto-prices"
 
 export default async function StakePage() {
   const supabase = await createClient()
@@ -11,6 +12,8 @@ export default async function StakePage() {
   const {
     data: { user },
   } = await supabase.auth.getUser()
+
+  const prices = await getCryptoPrices()
 
   // Fetch all active staking plans
   const { data: stakingPlans } = await supabase.from("staking_plans").select("*").eq("is_active", true)
@@ -52,47 +55,49 @@ export default async function StakePage() {
             ))}
           </TabsList>
 
-          {currencies.map((currency) => (
-            <TabsContent key={currency} value={currency} className="space-y-4">
-              {/* Balance Card */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Available Balance</CardTitle>
-                  <CardDescription>Your available {CURRENCY_INFO[currency].name} balance</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold">
-                    {getBalance(currency).toFixed(8)} {currency}
-                  </div>
-                  {getBalance(currency) === 0 && (
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      You need to deposit {currency} before you can stake
-                    </p>
-                  )}
-                </CardContent>
-              </Card>
+          {currencies.map((currency) => {
+            const cryptoBalance = getBalance(currency)
+            const price = prices[currency.toLowerCase()] || 1
+            const usdValue = cryptoBalance * price
 
-              {/* Staking Plans */}
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {plansByCurrency?.[currency]?.map((plan) => (
-                  <StakingPlanCard
-                    key={plan.id}
-                    plan={plan}
-                    availableBalance={getBalance(currency)}
-                    userId={user!.id}
-                  />
-                ))}
-              </div>
-
-              {(!plansByCurrency?.[currency] || plansByCurrency[currency].length === 0) && (
+            return (
+              <TabsContent key={currency} value={currency} className="space-y-4">
+                {/* Balance Card */}
                 <Card>
-                  <CardContent className="py-8 text-center text-muted-foreground">
-                    <p>No staking plans available for {currency} at the moment</p>
+                  <CardHeader>
+                    <CardTitle>Available Balance</CardTitle>
+                    <CardDescription>Your available {CURRENCY_INFO[currency].name} balance</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-3xl font-bold">
+                      {cryptoBalance.toFixed(8)} {currency}
+                    </div>
+                    <div className="text-lg text-muted-foreground mt-1">≈ ${usdValue.toFixed(2)} USD</div>
+                    {cryptoBalance === 0 && (
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        You need to deposit {currency} before you can stake
+                      </p>
+                    )}
                   </CardContent>
                 </Card>
-              )}
-            </TabsContent>
-          ))}
+
+                {/* Staking Plans */}
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  {plansByCurrency?.[currency]?.map((plan) => (
+                    <StakingPlanCard key={plan.id} plan={plan} availableBalance={cryptoBalance} userId={user!.id} />
+                  ))}
+                </div>
+
+                {(!plansByCurrency?.[currency] || plansByCurrency[currency].length === 0) && (
+                  <Card>
+                    <CardContent className="py-8 text-center text-muted-foreground">
+                      <p>No staking plans available for {currency} at the moment</p>
+                    </CardContent>
+                  </Card>
+                )}
+              </TabsContent>
+            )
+          })}
         </Tabs>
       </div>
     </div>

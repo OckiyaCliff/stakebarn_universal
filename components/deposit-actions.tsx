@@ -22,7 +22,7 @@ export function DepositActions({ deposit }: { deposit: any }) {
 
       router.refresh()
     } catch (error) {
-      console.error(" Error confirming deposit:", error)
+      console.error("Error confirming deposit:", error)
     } finally {
       setLoading(false)
     }
@@ -41,7 +41,7 @@ export function DepositActions({ deposit }: { deposit: any }) {
 
       router.refresh()
     } catch (error) {
-      console.error(" Error rejecting deposit:", error)
+      console.error("Error rejecting deposit:", error)
     } finally {
       setLoading(false)
     }

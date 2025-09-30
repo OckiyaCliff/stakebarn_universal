@@ -3,16 +3,17 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { Shield, Users, Wallet, TrendingUp, LayoutDashboard, LogOut } from "lucide-react"
+import { Shield, Users, Wallet, TrendingUp, LayoutDashboard, LogOut, ArrowDownToLine } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
 
 const navigation = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-  { name: "User Management", href: "/admin/users", icon: Users },
-  { name: "Deposit Management", href: "/admin/deposits", icon: Wallet },
-  { name: "Staking Management", href: "/admin/staking", icon: TrendingUp },
+  { name: "User Management", href: "/admin/dashboard/users", icon: Users },
+  { name: "Deposit Management", href: "/admin/dashboard/deposits", icon: Wallet },
+  { name: "Withdrawal Management", href: "/admin/dashboard/withdrawals", icon: ArrowDownToLine },
+  { name: "Staking Management", href: "/admin/dashboard/staking", icon: TrendingUp },
 ]
 
 export function AdminSidebar() {
