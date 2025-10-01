@@ -243,7 +243,7 @@ export default function HomePage() {
                 "Explore the benefits and considerations of staking Ethereum in the new proof-of-stake era.",
               date: "Mar 10, 2024",
               slug: "eth-2-staking-guide",
-              image: "https://images.unsplash.com/photo-1705234384094-0c047c1b2634?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              image: "https://images.unsplash.com/photo-1622790698141-94e30457ef12?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             },
             {
               title: "Maximizing Your Staking Rewards",
@@ -251,7 +251,7 @@ export default function HomePage() {
                 "Discover strategies to optimize your staking returns across different cryptocurrencies.",
               date: "Mar 5, 2024",
               slug: "maximizing-staking-rewards",
-              image: "https://images.unsplash.com/photo-1705234384094-0c047c1b2634?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              image: "https://images.unsplash.com/photo-1641284624414-10c3ac93cd07?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             },
           ].map((post) => (
             <Link
