@@ -57,7 +57,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
         <div className="aspect-video rounded-lg bg-muted mb-12 overflow-hidden">
           <img
-            src={`/.jpg?height=600&width=1200&query=${encodeURIComponent(post.title)}`}
+            src={post.image}
             alt={post.title}
             className="w-full h-full object-cover"
           />

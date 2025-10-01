@@ -3,6 +3,7 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { getAllBlogPosts } from "@/lib/blog"
 import { ArrowRight } from "lucide-react"
+// import { blogImages } from "@/lib/blogImages";
 
 export default function BlogPage() {
   const posts = getAllBlogPosts()
@@ -28,7 +29,7 @@ export default function BlogPage() {
             >
               <div className="aspect-video bg-muted overflow-hidden">
                 <img
-                  src={`/.jpg?height=300&width=500&query=${encodeURIComponent(post.title)}`}
+                  src={post.image}
                   alt={post.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />

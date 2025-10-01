@@ -7,6 +7,7 @@ export interface BlogPost {
   author: string
   category: string
   readTime: string
+  image?: string
 }
 
 export const blogPosts: BlogPost[] = [
@@ -45,6 +46,7 @@ Ready to start staking? Sign up today and begin your journey to passive crypto i
     author: "Sarah Chen",
     category: "Education",
     readTime: "5 min read",
+    image: "https://images.unsplash.com/photo-1705234384094-0c047c1b2634?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.1.0",
   },
   {
     slug: "eth-2-staking-guide",
@@ -82,6 +84,7 @@ Start staking ETH today and be part of Ethereum's sustainable future.
     author: "Michael Rodriguez",
     category: "Ethereum",
     readTime: "7 min read",
+    image: "https://images.unsplash.com/photo-1622790698141-94e30457ef12?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     slug: "maximizing-staking-rewards",
@@ -132,6 +135,7 @@ Ready to optimize your staking strategy? Join StakeBarn Universal and access com
     author: "Emily Thompson",
     category: "Strategy",
     readTime: "6 min read",
+    image: "https://images.unsplash.com/photo-1641284624414-10c3ac93cd07?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     slug: "solana-staking-explained",
@@ -160,6 +164,7 @@ Start staking SOL today with StakeBarn Universal.
     author: "David Park",
     category: "Solana",
     readTime: "4 min read",
+    image: "https://images.unsplash.com/photo-1660062993674-c3830d07ca0a?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     slug: "bitcoin-staking-revolution",
@@ -190,6 +195,7 @@ Explore Bitcoin staking opportunities at StakeBarn Universal.
     author: "Sarah Chen",
     category: "Bitcoin",
     readTime: "5 min read",
+    image: "https://images.unsplash.com/photo-1641580529558-a96cf6efbc72?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     slug: "xrp-staking-opportunities",
@@ -218,6 +224,7 @@ Start earning rewards on your XRP today.
     author: "Michael Rodriguez",
     category: "XRP",
     readTime: "4 min read",
+    image: "https://cryptodnes.bg/en/wp-content/uploads/sites/2/2025/09/Best-Altcoins-to-Buy-XRP-Price-Prediction-Crash-BNB-2.png",
   },
 ]
 
