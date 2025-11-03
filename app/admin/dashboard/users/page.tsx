@@ -14,8 +14,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Pencil, Loader2 } from "lucide-react"
+import { Pencil, Loader2, TrendingUp } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { AdminStakeDialog } from "@/components/admin-stake-dialog"
 
 interface Balance {
   id: string
@@ -37,6 +38,8 @@ export default function UsersPage() {
   const [editingUser, setEditingUser] = useState<User | null>(null)
   const [editBalance, setEditBalance] = useState<Balance | null>(null)
   const [saving, setSaving] = useState(false)
+  const [stakingUser, setStakingUser] = useState<{ user: User; balance: Balance } | null>(null)
+  const [stakeDialogOpen, setStakeDialogOpen] = useState(false)
   const { toast } = useToast()
 
   useEffect(() => {
@@ -151,33 +154,75 @@ export default function UsersPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Email</TableHead>
-                  <TableHead>Available Balance</TableHead>
-                  <TableHead>Staked Balance</TableHead>
+                  <TableHead>Balances</TableHead>
                   <TableHead>Joined</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {users.map((user) => {
-                  const balance = user.balances?.[0] || {
-                    currency: "USDT",
-                    available_balance: 0,
-                    staked_balance: 0,
-                  }
+                  const userBalances = user.balances || []
+                  const hasBalances = userBalances.length > 0
+
                   return (
                     <TableRow key={user.id}>
                       <TableCell className="font-medium">{user.email}</TableCell>
                       <TableCell>
-                        {balance.available_balance} {balance.currency}
-                      </TableCell>
-                      <TableCell>
-                        {balance.staked_balance} {balance.currency}
+                        {hasBalances ? (
+                          <div className="space-y-1">
+                            {userBalances.map((balance) => (
+                              <div key={balance.id} className="flex items-center gap-2 text-sm">
+                                <span className="font-medium">{balance.currency}:</span>
+                                <span className="text-muted-foreground">
+                                  Available: {Number.parseFloat(balance.available_balance.toString()).toFixed(8)}
+                                </span>
+                                <span className="text-muted-foreground">|</span>
+                                <span className="text-muted-foreground">
+                                  Staked: {Number.parseFloat(balance.staked_balance.toString()).toFixed(8)}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <span className="text-muted-foreground text-sm">No balances</span>
+                        )}
                       </TableCell>
                       <TableCell>{new Date(user.created_at).toLocaleDateString()}</TableCell>
                       <TableCell>
-                        <Button variant="ghost" size="sm" onClick={() => handleEditBalance(user, balance as Balance)}>
-                          <Pencil className="h-4 w-4" />
-                        </Button>
+                        <div className="flex items-center gap-2">
+                          {hasBalances && (
+                            <>
+                              {userBalances.map((balance) => {
+                                const available = Number.parseFloat(balance.available_balance.toString())
+                                return (
+                                  <Button
+                                    key={balance.id}
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => {
+                                      setStakingUser({ user, balance })
+                                      setStakeDialogOpen(true)
+                                    }}
+                                    disabled={available <= 0}
+                                    title={`Stake ${balance.currency} for ${user.email}`}
+                                  >
+                                    <TrendingUp className="h-4 w-4 mr-1" />
+                                    Stake {balance.currency}
+                                  </Button>
+                                )
+                              })}
+                            </>
+                          )}
+                          {userBalances.length > 0 && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleEditBalance(user, userBalances[0] as Balance)}
+                            >
+                              <Pencil className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </div>
                       </TableCell>
                     </TableRow>
                   )
@@ -240,6 +285,26 @@ export default function UsersPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Admin Stake Dialog */}
+      {stakingUser && (
+        <AdminStakeDialog
+          open={stakeDialogOpen}
+          onOpenChange={(open) => {
+            setStakeDialogOpen(open)
+            if (!open) {
+              setStakingUser(null)
+            }
+          }}
+          userId={stakingUser.user.id}
+          userEmail={stakingUser.user.email}
+          availableBalance={Number.parseFloat(stakingUser.balance.available_balance.toString())}
+          currency={stakingUser.balance.currency}
+          onSuccess={() => {
+            fetchUsers()
+          }}
+        />
+      )}
     </div>
   )
 }
