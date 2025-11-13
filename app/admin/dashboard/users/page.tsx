@@ -189,38 +189,38 @@ export default function UsersPage() {
                       </TableCell>
                       <TableCell>{new Date(user.created_at).toLocaleDateString()}</TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
                           {hasBalances && (
                             <>
                               {userBalances.map((balance) => {
                                 const available = Number.parseFloat(balance.available_balance.toString())
                                 return (
-                                  <Button
-                                    key={balance.id}
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => {
-                                      setStakingUser({ user, balance })
-                                      setStakeDialogOpen(true)
-                                    }}
-                                    disabled={available <= 0}
-                                    title={`Stake ${balance.currency} for ${user.email}`}
-                                  >
-                                    <TrendingUp className="h-4 w-4 mr-1" />
-                                    Stake {balance.currency}
-                                  </Button>
+                                  <div key={balance.id} className="flex items-center gap-1">
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => {
+                                        setStakingUser({ user, balance })
+                                        setStakeDialogOpen(true)
+                                      }}
+                                      disabled={available <= 0}
+                                      title={`Stake ${balance.currency} for ${user.email}`}
+                                    >
+                                      <TrendingUp className="h-4 w-4 mr-1" />
+                                      Stake {balance.currency}
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => handleEditBalance(user, balance)}
+                                      title={`Edit ${balance.currency} balance for ${user.email}`}
+                                    >
+                                      <Pencil className="h-4 w-4" />
+                                    </Button>
+                                  </div>
                                 )
                               })}
                             </>
-                          )}
-                          {userBalances.length > 0 && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleEditBalance(user, userBalances[0] as Balance)}
-                            >
-                              <Pencil className="h-4 w-4" />
-                            </Button>
                           )}
                         </div>
                       </TableCell>
@@ -237,7 +237,9 @@ export default function UsersPage() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Edit User Balance</DialogTitle>
-            <DialogDescription>Update the balance for {editingUser?.email}</DialogDescription>
+            <DialogDescription>
+              Update the {editBalance?.currency} balance for {editingUser?.email}
+            </DialogDescription>
           </DialogHeader>
           {editBalance && (
             <div className="space-y-4">
@@ -247,14 +249,18 @@ export default function UsersPage() {
                   id="currency"
                   value={editBalance.currency}
                   onChange={(e) => setEditBalance({ ...editBalance, currency: e.target.value })}
+                  disabled
+                  className="bg-muted"
                 />
+                <p className="text-xs text-muted-foreground mt-1">Currency cannot be changed</p>
               </div>
               <div>
                 <Label htmlFor="available">Available Balance</Label>
                 <Input
                   id="available"
                   type="number"
-                  step="0.01"
+                  step="0.00000001"
+                  min="0"
                   value={editBalance.available_balance}
                   onChange={(e) =>
                     setEditBalance({ ...editBalance, available_balance: Number.parseFloat(e.target.value) || 0 })
@@ -266,7 +272,8 @@ export default function UsersPage() {
                 <Input
                   id="staked"
                   type="number"
-                  step="0.01"
+                  step="0.00000001"
+                  min="0"
                   value={editBalance.staked_balance}
                   onChange={(e) =>
                     setEditBalance({ ...editBalance, staked_balance: Number.parseFloat(e.target.value) || 0 })
