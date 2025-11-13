@@ -131,19 +131,60 @@ export function StakeDialog({ open, onOpenChange, plan, availableBalance, userId
 
           <div className="space-y-2">
             <Label htmlFor="amount">Amount to Stake</Label>
+            <Input
+              id="amount"
+              type="number"
+              step="0.00000001"
+              min={minStake}
+              max={availableBalance}
+              placeholder={`Min: ${minStake}`}
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
             <div className="flex gap-2">
-              <Input
-                id="amount"
-                type="number"
-                step="0.00000001"
-                min={minStake}
-                max={availableBalance}
-                placeholder={`Min: ${minStake}`}
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-              />
-              <Button variant="outline" onClick={() => setAmount(availableBalance.toString())}>
-                Max
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1"
+                onClick={() => {
+                  const calculatedAmount = (availableBalance * 0.25).toFixed(8)
+                  setAmount(calculatedAmount)
+                }}
+              >
+                25%
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1"
+                onClick={() => {
+                  const calculatedAmount = (availableBalance * 0.5).toFixed(8)
+                  setAmount(calculatedAmount)
+                }}
+              >
+                50%
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1"
+                onClick={() => {
+                  const calculatedAmount = (availableBalance * 0.75).toFixed(8)
+                  setAmount(calculatedAmount)
+                }}
+              >
+                75%
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1"
+                onClick={() => {
+                  const calculatedAmount = availableBalance.toFixed(8)
+                  setAmount(calculatedAmount)
+                }}
+              >
+                100%
               </Button>
             </div>
             <p className="text-xs text-muted-foreground">
