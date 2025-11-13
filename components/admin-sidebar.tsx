@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { Shield, Users, Wallet, TrendingUp, LayoutDashboard, LogOut, ArrowDownToLine } from "lucide-react"
+import { Shield, Users, Wallet, TrendingUp, LayoutDashboard, LogOut, ArrowDownToLine, DollarSign } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
@@ -14,6 +14,7 @@ const navigation = [
   { name: "Deposit Management", href: "/admin/dashboard/deposits", icon: Wallet },
   { name: "Withdrawal Management", href: "/admin/dashboard/withdrawals", icon: ArrowDownToLine },
   { name: "Staking Management", href: "/admin/dashboard/staking", icon: TrendingUp },
+  { name: "Profits Management", href: "/admin/dashboard/profits", icon: DollarSign },
 ]
 
 export function AdminSidebar() {

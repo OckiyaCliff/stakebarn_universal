@@ -14,9 +14,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Pencil, Loader2, TrendingUp } from "lucide-react"
+import { Pencil, Loader2, TrendingUp, Wallet } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { AdminStakeDialog } from "@/components/admin-stake-dialog"
+import { AdminDepositDialog } from "@/components/admin-deposit-dialog"
 
 interface Balance {
   id: string
@@ -40,6 +41,8 @@ export default function UsersPage() {
   const [saving, setSaving] = useState(false)
   const [stakingUser, setStakingUser] = useState<{ user: User; balance: Balance } | null>(null)
   const [stakeDialogOpen, setStakeDialogOpen] = useState(false)
+  const [depositUser, setDepositUser] = useState<User | null>(null)
+  const [depositDialogOpen, setDepositDialogOpen] = useState(false)
   const { toast } = useToast()
 
   useEffect(() => {
@@ -222,6 +225,18 @@ export default function UsersPage() {
                               })}
                             </>
                           )}
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              setDepositUser(user)
+                              setDepositDialogOpen(true)
+                            }}
+                            title={`Create deposit for ${user.email}`}
+                          >
+                            <Wallet className="h-4 w-4 mr-1" />
+                            Add Deposit
+                          </Button>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -307,6 +322,24 @@ export default function UsersPage() {
           userEmail={stakingUser.user.email}
           availableBalance={Number.parseFloat(stakingUser.balance.available_balance.toString())}
           currency={stakingUser.balance.currency}
+          onSuccess={() => {
+            fetchUsers()
+          }}
+        />
+      )}
+
+      {/* Admin Deposit Dialog */}
+      {depositUser && (
+        <AdminDepositDialog
+          open={depositDialogOpen}
+          onOpenChange={(open) => {
+            setDepositDialogOpen(open)
+            if (!open) {
+              setDepositUser(null)
+            }
+          }}
+          userId={depositUser.id}
+          userEmail={depositUser.email}
           onSuccess={() => {
             fetchUsers()
           }}
