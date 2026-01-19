@@ -33,13 +33,18 @@ export function SiteFooter() {
             <h3 className="text-sm font-semibold text-foreground">Company</h3>
             <ul className="mt-4 space-y-3">
               <li>
-                <Link href="/#partners" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Partners
+                <Link href="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  About Us
                 </Link>
               </li>
               <li>
                 <Link href="/blog" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   Blog
+                </Link>
+              </li>
+              <li>
+                <Link href="/#partners" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Partners
                 </Link>
               </li>
             </ul>
@@ -49,14 +54,19 @@ export function SiteFooter() {
             <h3 className="text-sm font-semibold text-foreground">Resources</h3>
             <ul className="mt-4 space-y-3">
               <li>
-                <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Documentation
-                </a>
+                <Link href="/learn" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Learning Center
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Support
-                </a>
+                <Link href="/resources" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Resources
+                </Link>
+              </li>
+              <li>
+                <Link href="/resources#faq" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  FAQ
+                </Link>
               </li>
             </ul>
           </div>
@@ -65,14 +75,14 @@ export function SiteFooter() {
             <h3 className="text-sm font-semibold text-foreground">Legal</h3>
             <ul className="mt-4 space-y-3">
               <li>
-                <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Privacy
-                </a>
+                <Link href="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Privacy Policy
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Terms
-                </a>
+                <Link href="/terms" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Terms of Service
+                </Link>
               </li>
             </ul>
           </div>

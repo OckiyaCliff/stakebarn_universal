@@ -79,14 +79,24 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
+  // Define public routes that don't require authentication
+  const publicRoutes = [
+    "/",
+    "/auth",
+    "/blog",
+    "/about",
+    "/privacy",
+    "/terms",
+    "/learn",
+    "/resources",
+  ]
+
+  const isPublicRoute = publicRoutes.some(
+    (route) => request.nextUrl.pathname === route || request.nextUrl.pathname.startsWith(route + "/")
+  )
+
   // Redirect to login if not authenticated and trying to access protected routes
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith("/auth") &&
-    !isAdminRoute &&
-    request.nextUrl.pathname !== "/" &&
-    !request.nextUrl.pathname.startsWith("/blog")
-  ) {
+  if (!user && !isPublicRoute && !isAdminRoute) {
     const url = request.nextUrl.clone()
     url.pathname = "/auth/login"
     return NextResponse.redirect(url)

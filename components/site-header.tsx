@@ -36,22 +36,22 @@ export function SiteHeader() {
         {/* Desktop navigation */}
         <div className="hidden lg:flex lg:gap-x-8">
           <Link
-            href="/#features"
+            href="/about"
             className="text-sm font-semibold leading-6 text-foreground hover:text-primary transition-colors"
           >
-            Features
+            About
           </Link>
           <Link
-            href="/#currencies"
+            href="/learn"
             className="text-sm font-semibold leading-6 text-foreground hover:text-primary transition-colors"
           >
-            Currencies
+            Learn
           </Link>
           <Link
-            href="/#partners"
+            href="/resources"
             className="text-sm font-semibold leading-6 text-foreground hover:text-primary transition-colors"
           >
-            Partners
+            Resources
           </Link>
           <Link
             href="/blog"
@@ -76,25 +76,25 @@ export function SiteHeader() {
         <div className="lg:hidden">
           <div className="space-y-1 px-6 pb-6 pt-2">
             <Link
-              href="/#features"
+              href="/about"
               className="block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-foreground hover:bg-accent"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Features
+              About
             </Link>
             <Link
-              href="/#currencies"
+              href="/learn"
               className="block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-foreground hover:bg-accent"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Currencies
+              Learn
             </Link>
             <Link
-              href="/#partners"
+              href="/resources"
               className="block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-foreground hover:bg-accent"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Partners
+              Resources
             </Link>
             <Link
               href="/blog"
