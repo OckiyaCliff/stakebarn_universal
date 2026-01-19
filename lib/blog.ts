@@ -356,11 +356,11 @@ Not all APY is created equal. Consider:
 - **Compound frequency**: Daily compounding beats monthly
 
 **Example Comparison:**
-- Flexible ETH staking: 6% APY
-- 30-day locked: 10% APY
-- 90-day locked: 15% APY
+- Flexible ETH staking: 80% APY
+- 30-day locked: 120% APY
+- 90-day locked: 180% APY
 
-The 90-day plan earns 2.5x more per year, but locks your funds.
+The 90-day plan earns significantly more per year, but locks your funds.
 
 ### Step 4: Evaluate the Cryptocurrency
 
@@ -522,13 +522,13 @@ Staking rewards are often taxable income. Plan accordingly.
 
 Be wary of promised returns that seem too good to be true.
 
-**Sustainable APY ranges:**
-- ETH: 4-8%
-- BTC: 2-6%
-- SOL: 6-10%
-- XRP: 4-8%
+**Sustainable APY ranges on StakeBarn:**
+- ETH: 120-150%
+- BTC: 100-140%
+- SOL: 150-180%
+- XRP: 120-160%
 
-Platform-enhanced yields can be higher but may involve additional risks.
+Platform-enhanced yields are made possible through advanced DeFi strategies and optimized transaction processing.
 
 Understanding how APY works helps you make informed decisions and set realistic expectations.
     `,
@@ -670,7 +670,7 @@ We've seen many stakers make costly mistakes. Learn from their experiences so yo
 ## Mistake #1: Chasing Unsustainable APY
 
 **The Problem:**
-A platform offers 200% APY. Too good to be true? It usually is.
+A platform offers 1000% APY. Too good to be true? It usually is.
 
 **What Happens:**
 - Ponzi dynamics: new deposits pay old investors
@@ -678,12 +678,12 @@ A platform offers 200% APY. Too good to be true? It usually is.
 - Token hyperinflation erases gains
 
 **Real Example:**
-Several high-yield platforms in 2022 promised 20%+ APY and later became insolvent, losing billions in user funds.
+Several high-yield platforms in 2022 promised excessive, unbacked APY and later became insolvent, losing billions in user funds.
 
 **How to Avoid:**
-- Be skeptical of APY above 20%
+- Be skeptical of APY above 500% without clear yield sources
 - Ask: "Where does this yield come from?"
-- Stick with established, transparent platforms
+- Stick with established, transparent platforms like StakeBarn
 - If you can't explain the yield source, don't invest
 
 ## Mistake #2: Ignoring Lock-Up Periods

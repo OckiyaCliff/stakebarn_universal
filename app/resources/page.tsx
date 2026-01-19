@@ -56,6 +56,94 @@ const glossary = [
     { term: "Unbonding", definition: "The process of withdrawing staked assets, which may take time" },
 ]
 
+const currencies = [
+    { name: "Ethereum", symbol: "ETH", apy: 1.5 }, // 150%
+    { name: "Bitcoin", symbol: "BTC", apy: 1.2 },  // 120%
+    { name: "Solana", symbol: "SOL", apy: 1.8 },   // 180%
+    { name: "Ripple", symbol: "XRP", apy: 1.4 },   // 140%
+]
+
+const periods = [
+    { label: "Flexible", multiplier: 0.8 }, // Lower rewards for flexibility
+    { label: "30 Days", multiplier: 1.0 },
+    { label: "60 Days", multiplier: 1.1 },
+    { label: "90 Days", multiplier: 1.2 },
+]
+
+function CalculatorComponent() {
+    const [amount, setAmount] = useState<number>(1000)
+    const [currencyIndex, setCurrencyIndex] = useState(0)
+    const [periodIndex, setPeriodIndex] = useState(1)
+
+    const selectedCurrency = currencies[currencyIndex]
+    const selectedPeriod = periods[periodIndex]
+
+    // Math: Principal * APY * Period Multiplier
+    const annualReward = amount * selectedCurrency.apy * selectedPeriod.multiplier
+    const monthlyEstimate = annualReward / 12
+
+    return (
+        <div className="rounded-lg border border-border bg-background p-6 space-y-6">
+            <div>
+                <label className="block text-sm font-medium text-foreground mb-2">Investment Amount (USD)</label>
+                <input
+                    type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(Number(e.target.value))}
+                    className="w-full rounded-md border border-border bg-background px-4 py-2 text-foreground focus:border-primary focus:outline-none"
+                />
+            </div>
+            <div>
+                <label className="block text-sm font-medium text-foreground mb-2">Select Cryptocurrency</label>
+                <select
+                    value={currencyIndex}
+                    onChange={(e) => setCurrencyIndex(Number(e.target.value))}
+                    className="w-full rounded-md border border-border bg-background px-4 py-2 text-foreground focus:border-primary focus:outline-none"
+                >
+                    {currencies.map((c, i) => (
+                        <option key={c.symbol} value={i}>
+                            {c.name} ({c.symbol}) - Up to {(c.apy * 100).toFixed(0)}% APY
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div>
+                <label className="block text-sm font-medium text-foreground mb-2">Staking Period</label>
+                <select
+                    value={periodIndex}
+                    onChange={(e) => setPeriodIndex(Number(e.target.value))}
+                    className="w-full rounded-md border border-border bg-background px-4 py-2 text-foreground focus:border-primary focus:outline-none"
+                >
+                    {periods.map((p, i) => (
+                        <option key={p.label} value={i}>
+                            {p.label}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
+            <div className="pt-4 border-t border-border">
+                <div className="flex justify-between items-center mb-2">
+                    <span className="text-muted-foreground">Estimated Annual Reward</span>
+                    <span className="text-xl font-bold text-primary">
+                        ${annualReward.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </span>
+                </div>
+                <div className="flex justify-between items-center">
+                    <span className="text-muted-foreground">Monthly Estimate</span>
+                    <span className="text-lg font-semibold text-foreground">
+                        ${monthlyEstimate.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </span>
+                </div>
+            </div>
+
+            <Button asChild className="w-full">
+                <Link href="/auth/sign-up">Start Staking Now</Link>
+            </Button>
+        </div>
+    )
+}
+
 export default function ResourcesPage() {
     const [openFaq, setOpenFaq] = useState<number | null>(0)
 
@@ -113,49 +201,7 @@ export default function ResourcesPage() {
                     </div>
 
                     <div className="mx-auto max-w-xl">
-                        <div className="rounded-lg border border-border bg-background p-6 space-y-6">
-                            <div>
-                                <label className="block text-sm font-medium text-foreground mb-2">Investment Amount (USD)</label>
-                                <input
-                                    type="number"
-                                    placeholder="1000"
-                                    className="w-full rounded-md border border-border bg-background px-4 py-2 text-foreground focus:border-primary focus:outline-none"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-foreground mb-2">Select Cryptocurrency</label>
-                                <select className="w-full rounded-md border border-border bg-background px-4 py-2 text-foreground focus:border-primary focus:outline-none">
-                                    <option>Ethereum (ETH) - Up to 150% APY</option>
-                                    <option>Bitcoin (BTC) - Up to 120% APY</option>
-                                    <option>Solana (SOL) - Up to 180% APY</option>
-                                    <option>Ripple (XRP) - Up to 140% APY</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-foreground mb-2">Staking Period</label>
-                                <select className="w-full rounded-md border border-border bg-background px-4 py-2 text-foreground focus:border-primary focus:outline-none">
-                                    <option>Flexible</option>
-                                    <option>30 Days</option>
-                                    <option>60 Days</option>
-                                    <option>90 Days</option>
-                                </select>
-                            </div>
-
-                            <div className="pt-4 border-t border-border">
-                                <div className="flex justify-between items-center mb-2">
-                                    <span className="text-muted-foreground">Estimated Annual Reward</span>
-                                    <span className="text-xl font-bold text-primary">$180.00</span>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-muted-foreground">Monthly Estimate</span>
-                                    <span className="text-lg font-semibold text-foreground">$15.00</span>
-                                </div>
-                            </div>
-
-                            <Button asChild className="w-full">
-                                <Link href="/auth/sign-up">Start Staking Now</Link>
-                            </Button>
-                        </div>
+                        <CalculatorComponent />
                         <p className="mt-4 text-xs text-center text-muted-foreground">
                             *Estimates are for illustrative purposes only. Actual rewards may vary based on market conditions.
                         </p>

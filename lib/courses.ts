@@ -108,9 +108,9 @@ APY stands for Annual Percentage Yield. It represents the total return on your s
 • **Platform fees**: Some platforms take a cut
 
 **Realistic Expectations**
-• ETH staking: 3-6% APY
-• SOL staking: 6-8% APY
-• Platform-enhanced staking: Can be higher
+• ETH staking: 120-150% APY
+• SOL staking: 150-180% APY
+• Platform-optimized yields: 120%+ guaranteed base
 
 **The Power of Compounding**
 If you reinvest your rewards, you'll earn interest on your interest. Over time, this significantly boosts returns.`
@@ -736,7 +736,7 @@ Many stakers aim to eventually live off staking rewards. Here's how to work towa
 **Calculate Your Number**
 • Monthly expenses × 12 = Annual needs
 • Annual needs ÷ Average APY = Required capital
-• Example: $3,000/month × 12 = $36,000 ÷ 0.10 = $360,000
+• Example: $3,000/month × 12 = $36,000 ÷ 1.20 = $30,000 capital required
 
 **Building Your Stack**
 • Regular contributions
