@@ -4,17 +4,10 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { getCourse, getAllCourses } from "@/lib/courses"
+import { getCourse } from "@/lib/courses"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Clock, BookOpen, CheckCircle } from "lucide-react"
 import { useState } from "react"
-
-export function generateStaticParams() {
-    const courses = getAllCourses()
-    return courses.map((course) => ({
-        slug: course.slug,
-    }))
-}
 
 export default function CoursePage({ params }: { params: { slug: string } }) {
     const course = getCourse(params.slug)
@@ -105,15 +98,15 @@ export default function CoursePage({ params }: { params: { slug: string } }) {
                                         key={index}
                                         onClick={() => setActiveLesson(index)}
                                         className={`w-full flex items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors ${activeLesson === index
-                                                ? "bg-primary text-primary-foreground"
-                                                : "hover:bg-muted text-muted-foreground hover:text-foreground"
+                                            ? "bg-primary text-primary-foreground"
+                                            : "hover:bg-muted text-muted-foreground hover:text-foreground"
                                             }`}
                                     >
                                         <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs ${completedLessons.includes(index)
-                                                ? "bg-green-500 text-white"
-                                                : activeLesson === index
-                                                    ? "bg-primary-foreground text-primary"
-                                                    : "bg-muted text-muted-foreground"
+                                            ? "bg-green-500 text-white"
+                                            : activeLesson === index
+                                                ? "bg-primary-foreground text-primary"
+                                                : "bg-muted text-muted-foreground"
                                             }`}>
                                             {completedLessons.includes(index) ? (
                                                 <CheckCircle className="h-4 w-4" />

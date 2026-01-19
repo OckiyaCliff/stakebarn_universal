@@ -125,10 +125,10 @@ export default function ResourcesPage() {
                             <div>
                                 <label className="block text-sm font-medium text-foreground mb-2">Select Cryptocurrency</label>
                                 <select className="w-full rounded-md border border-border bg-background px-4 py-2 text-foreground focus:border-primary focus:outline-none">
-                                    <option>Ethereum (ETH) - Up to 18% APY</option>
-                                    <option>Bitcoin (BTC) - Up to 12% APY</option>
-                                    <option>Solana (SOL) - Up to 22% APY</option>
-                                    <option>Ripple (XRP) - Up to 16% APY</option>
+                                    <option>Ethereum (ETH) - Up to 150% APY</option>
+                                    <option>Bitcoin (BTC) - Up to 120% APY</option>
+                                    <option>Solana (SOL) - Up to 180% APY</option>
+                                    <option>Ripple (XRP) - Up to 140% APY</option>
                                 </select>
                             </div>
                             <div>

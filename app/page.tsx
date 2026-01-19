@@ -239,7 +239,7 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { icon: TrendingUp, title: "High APY", desc: "Earn up to 22% APY on your crypto holdings with our competitive staking plans" },
+            { icon: TrendingUp, title: "High APY", desc: "Earn up to 180% APY on your crypto holdings with our competitive staking plans" },
             { icon: Shield, title: "Secure", desc: "Your assets are protected with industry-leading security and blockchain verification" },
             { icon: Zap, title: "Flexible", desc: "Choose between flexible or locked staking plans that fit your investment strategy" },
             { icon: Lock, title: "Transparent", desc: "Real-time tracking of your deposits, stakes, and rewards with full transparency" },
@@ -279,10 +279,10 @@ export default function HomePage() {
 
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
             {[
-              { name: "Ethereum", symbol: "ETH", apy: "Up to 18%", color: "from-blue-500/20" },
-              { name: "Bitcoin", symbol: "BTC", apy: "Up to 12%", color: "from-orange-500/20" },
-              { name: "Solana", symbol: "SOL", apy: "Up to 22%", color: "from-purple-500/20" },
-              { name: "Ripple", symbol: "XRP", apy: "Up to 16%", color: "from-gray-500/20" },
+              { name: "Ethereum", symbol: "ETH", apy: "Up to 150%", color: "from-blue-500/20" },
+              { name: "Bitcoin", symbol: "BTC", apy: "Up to 120%", color: "from-orange-500/20" },
+              { name: "Solana", symbol: "SOL", apy: "Up to 180%", color: "from-purple-500/20" },
+              { name: "Ripple", symbol: "XRP", apy: "Up to 140%", color: "from-gray-500/20" },
             ].map((currency) => (
               <div
                 key={currency.symbol}
