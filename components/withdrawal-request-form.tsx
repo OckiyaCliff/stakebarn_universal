@@ -2,16 +2,17 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
-import { Loader2 } from "lucide-react"
+import { Loader2, Info } from "lucide-react"
 import { toast } from "sonner"
 
 interface Balance {
@@ -19,6 +20,7 @@ interface Balance {
   currency: string
   available_balance: number
   total_rewards: number
+  bonus_balance?: number
 }
 
 interface WithdrawalRequestFormProps {
@@ -32,10 +34,44 @@ export function WithdrawalRequestForm({ balances }: WithdrawalRequestFormProps) 
   const [currency, setCurrency] = useState("")
   const [amount, setAmount] = useState("")
   const [walletAddress, setWalletAddress] = useState("")
+  const [hasDeposit, setHasDeposit] = useState(false)
+
+  useEffect(() => {
+    // Check if user has made at least one deposit (for profit withdrawal eligibility)
+    async function checkDeposits() {
+      const supabase = createClient()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) return
+
+      const { count } = await supabase
+        .from("deposits")
+        .select("*", { count: "exact", head: true })
+        .eq("user_id", user.id)
+        .eq("status", "confirmed")
+
+      setHasDeposit((count || 0) > 0)
+    }
+    checkDeposits()
+  }, [])
 
   const selectedBalance = balances.find((b) => b.currency === currency)
+
+  // For balance withdrawal: subtract bonus_balance (not withdrawable)
+  const bonusAmount = selectedBalance?.bonus_balance
+    ? parseFloat(selectedBalance.bonus_balance.toString())
+    : 0
+
+  const withdrawableBalance = Math.max(
+    0,
+    (selectedBalance?.available_balance || 0) - bonusAmount
+  )
+
   const maxAmount =
-    withdrawalType === "balance" ? selectedBalance?.available_balance || 0 : selectedBalance?.total_rewards || 0
+    withdrawalType === "balance"
+      ? withdrawableBalance
+      : selectedBalance?.total_rewards || 0
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -53,6 +89,12 @@ export function WithdrawalRequestForm({ balances }: WithdrawalRequestFormProps) 
 
     if (amountNum > maxAmount) {
       toast.error(`Insufficient ${withdrawalType === "balance" ? "balance" : "rewards"}`)
+      return
+    }
+
+    // Profit withdrawal requires at least one deposit
+    if (withdrawalType === "profit" && !hasDeposit) {
+      toast.error("You need to make at least one deposit before withdrawing profits")
       return
     }
 
@@ -129,6 +171,29 @@ export function WithdrawalRequestForm({ balances }: WithdrawalRequestFormProps) 
             </RadioGroup>
           </div>
 
+          {/* Bonus restriction notice */}
+          {withdrawalType === "balance" && bonusAmount > 0 && currency && (
+            <Alert className="border-yellow-500/30 bg-yellow-500/5">
+              <Info className="h-4 w-4 text-yellow-500" />
+              <AlertDescription className="text-sm">
+                Your ${bonusAmount.toFixed(8)} {currency} welcome bonus is not withdrawable from balance.
+                Withdrawable balance: {withdrawableBalance.toFixed(8)} {currency}.
+                You can only withdraw profits earned from staking the bonus.
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {/* Profit withdrawal restriction */}
+          {withdrawalType === "profit" && !hasDeposit && (
+            <Alert className="border-yellow-500/30 bg-yellow-500/5">
+              <Info className="h-4 w-4 text-yellow-500" />
+              <AlertDescription className="text-sm">
+                You need to make at least one deposit before withdrawing staking profits.
+                This ensures the security and integrity of your account.
+              </AlertDescription>
+            </Alert>
+          )}
+
           {/* Currency Selection */}
           <div className="space-y-2">
             <Label htmlFor="currency">Currency</Label>
@@ -141,7 +206,7 @@ export function WithdrawalRequestForm({ balances }: WithdrawalRequestFormProps) 
                   <SelectItem key={balance.id} value={balance.currency}>
                     {balance.currency} (Available:{" "}
                     {withdrawalType === "balance"
-                      ? Number.parseFloat(balance.available_balance.toString()).toFixed(8)
+                      ? Math.max(0, Number.parseFloat(balance.available_balance.toString()) - (balance.bonus_balance ? parseFloat(balance.bonus_balance.toString()) : 0)).toFixed(8)
                       : Number.parseFloat(balance.total_rewards.toString()).toFixed(8)}
                     )
                   </SelectItem>
@@ -194,7 +259,11 @@ export function WithdrawalRequestForm({ balances }: WithdrawalRequestFormProps) 
             </p>
           </div>
 
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={isSubmitting || (withdrawalType === "profit" && !hasDeposit)}
+          >
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

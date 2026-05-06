@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Users, Wallet, TrendingUp, DollarSign } from "lucide-react"
 import { fetchCryptoPrices, convertToUSD, formatUSD } from "@/lib/crypto-prices"
+import { cn } from "@/lib/utils"
 
 export default async function AdminDashboardPage() {
   const supabase = await createClient()
@@ -24,10 +25,10 @@ export default async function AdminDashboardPage() {
     }, 0) || 0
 
   const stats = [
-    { name: "Total Users", value: totalUsers || 0, icon: Users, color: "text-blue-500" },
-    { name: "Total Deposits", value: totalDeposits || 0, icon: Wallet, color: "text-emerald-500" },
-    { name: "Active Stakes", value: activeStakes || 0, icon: TrendingUp, color: "text-purple-500" },
-    { name: "Total Volume", value: formatUSD(volume), icon: DollarSign, color: "text-yellow-500" },
+    { name: "Total Users", value: totalUsers || 0, icon: Users, color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/20" },
+    { name: "Total Deposits", value: totalDeposits || 0, icon: Wallet, color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20" },
+    { name: "Active Stakes", value: activeStakes || 0, icon: TrendingUp, color: "text-purple-400", bg: "bg-purple-500/10", border: "border-purple-500/20" },
+    { name: "Total Volume", value: formatUSD(volume), icon: DollarSign, color: "text-yellow-400", bg: "bg-yellow-500/10", border: "border-yellow-500/20" },
   ]
 
   return (
@@ -41,10 +42,12 @@ export default async function AdminDashboardPage() {
         {stats.map((stat) => {
           const Icon = stat.icon
           return (
-            <Card key={stat.name}>
+            <Card key={stat.name} className={cn("border", stat.border, "bg-gradient-to-br from-card to-card/50")}>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">{stat.name}</CardTitle>
-                <Icon className={cn("h-5 w-5", stat.color)} />
+                <div className={cn("flex h-9 w-9 items-center justify-center rounded-lg", stat.bg)}>
+                  <Icon className={cn("h-5 w-5", stat.color)} />
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{stat.value}</div>
@@ -55,8 +58,4 @@ export default async function AdminDashboardPage() {
       </div>
     </div>
   )
-}
-
-function cn(...classes: string[]) {
-  return classes.filter(Boolean).join(" ")
 }

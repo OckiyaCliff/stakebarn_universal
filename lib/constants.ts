@@ -8,6 +8,12 @@ export const PLATFORM_WALLETS = {
 
 export type Currency = keyof typeof PLATFORM_WALLETS
 
+// Swap fee percentage (1.5%)
+export const SWAP_FEE_PERCENT = 0.015
+
+// Signup bonus amount in USD
+export const SIGNUP_BONUS_USD = 15
+
 export const CURRENCY_INFO = {
   ETH: { name: "Ethereum", symbol: "ETH", decimals: 18 },
   BTC: { name: "Bitcoin", symbol: "BTC", decimals: 8 },

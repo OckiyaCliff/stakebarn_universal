@@ -1,6 +1,6 @@
 import type React from "react"
 import { AdminSidebar } from "@/components/admin-sidebar"
-import { AdminMobileHeader } from "@/components/admin-mobile-header"
+import { AdminMobileDock } from "@/components/admin-mobile-dock"
 import { requireAdmin } from "@/lib/admin-auth"
 import { redirect } from "next/navigation"
 
@@ -12,12 +12,17 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   }
 
   return (
-    <div className="flex h-screen flex-col md:flex-row">
-      <AdminMobileHeader />
+    <div className="flex h-screen overflow-hidden">
+      {/* Desktop Sidebar */}
       <aside className="w-64 hidden md:block">
         <AdminSidebar />
       </aside>
-      <main className="flex-1 overflow-y-auto bg-background">{children}</main>
+
+      {/* Main Content */}
+      <main className="flex-1 overflow-y-auto bg-background pb-24 md:pb-0">{children}</main>
+
+      {/* Mobile Bottom Dock */}
+      <AdminMobileDock />
     </div>
   )
 }

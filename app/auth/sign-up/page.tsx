@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { Gift, Sparkles } from "lucide-react"
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("")
@@ -40,6 +41,14 @@ export default function SignUpPage() {
         },
       })
       if (error) throw error
+
+      // Try to claim signup bonus
+      try {
+        await fetch("/api/signup-bonus", { method: "POST" })
+      } catch {
+        // Bonus claim is non-critical
+      }
+
       router.push("/auth/sign-up-success")
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred")
@@ -55,6 +64,25 @@ export default function SignUpPage() {
           <h1 className="text-2xl font-bold text-foreground">StakeBarn</h1>
           <p className="text-sm text-muted-foreground">Universal Staking Platform</p>
         </div>
+
+        {/* $15 Welcome Bonus Banner */}
+        <div className="mb-4 rounded-2xl bg-gradient-to-r from-primary/20 via-primary/10 to-emerald-500/5 border border-primary/20 p-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20">
+              <Gift className="h-5 w-5 text-primary" />
+            </div>
+            <div>
+              <div className="flex items-center gap-1.5">
+                <span className="font-bold text-foreground">$15 Welcome Bonus</span>
+                <Sparkles className="h-4 w-4 text-primary" />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Sign up now and get $15 in ETH credited to your account
+              </p>
+            </div>
+          </div>
+        </div>
+
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl">Create Account</CardTitle>
@@ -96,7 +124,7 @@ export default function SignUpPage() {
                 </div>
                 {error && <p className="text-sm text-destructive">{error}</p>}
                 <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? "Creating account..." : "Sign Up"}
+                  {isLoading ? "Creating account..." : "Sign Up & Claim $15 Bonus"}
                 </Button>
               </div>
               <div className="mt-4 text-center text-sm">
