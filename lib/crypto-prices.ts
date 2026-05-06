@@ -1,16 +1,8 @@
 // Crypto price utilities using CoinGecko API
 
-export type CryptoCurrency = "BTC" | "ETH" | "SOL" | "XRP" | "USDT" | "USDC"
+import { ASSETS } from "./constants"
 
-// Map our currency symbols to CoinGecko IDs
-const COINGECKO_IDS: Record<CryptoCurrency, string> = {
-  BTC: "bitcoin",
-  ETH: "ethereum",
-  SOL: "solana",
-  XRP: "ripple",
-  USDT: "tether",
-  USDC: "usd-coin",
-}
+export type CryptoCurrency = keyof typeof ASSETS
 
 export interface CryptoPrices {
   [key: string]: number
@@ -22,7 +14,9 @@ export interface CryptoPrices {
  */
 export async function fetchCryptoPrices(): Promise<CryptoPrices> {
   try {
-    const ids = Object.values(COINGECKO_IDS).join(",")
+    const ids = Object.values(ASSETS)
+      .map((a) => a.coingeckoId)
+      .join(",")
     const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`, {
       next: { revalidate: 60 }, // Cache for 60 seconds
     })
@@ -35,8 +29,8 @@ export async function fetchCryptoPrices(): Promise<CryptoPrices> {
 
     // Convert CoinGecko IDs back to our currency symbols
     const prices: CryptoPrices = {}
-    for (const [symbol, id] of Object.entries(COINGECKO_IDS)) {
-      prices[symbol.toLowerCase()] = data[id]?.usd || 0
+    for (const [symbol, config] of Object.entries(ASSETS)) {
+      prices[symbol.toLowerCase()] = data[config.coingeckoId]?.usd || 0
     }
 
     return prices
@@ -47,7 +41,11 @@ export async function fetchCryptoPrices(): Promise<CryptoPrices> {
       btc: 95000,
       eth: 3500,
       sol: 180,
+      atom: 12,
+      dot: 7,
+      avax: 35,
       xrp: 2.5,
+      xlm: 0.45,
       usdt: 1,
       usdc: 1,
     }

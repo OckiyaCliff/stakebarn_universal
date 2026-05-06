@@ -13,7 +13,7 @@ const navigation = [
   { name: "Deposit", href: "/dashboard/deposit", icon: Wallet },
   { name: "Swap", href: "/dashboard/swap", icon: ArrowLeftRight },
   { name: "Withdraw", href: "/dashboard/withdraw", icon: ArrowDownToLine },
-  { name: "Stake", href: "/dashboard/stake", icon: TrendingUp },
+  { name: "Earn", href: "/dashboard/stake", icon: TrendingUp },
   { name: "History", href: "/dashboard/history", icon: History },
 ]
 

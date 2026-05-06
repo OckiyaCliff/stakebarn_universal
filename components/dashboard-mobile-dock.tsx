@@ -36,7 +36,7 @@ export function DashboardMobileDock() {
     },
     {
       icon: <TrendingUp size={18} />,
-      label: 'Stake',
+      label: 'Earn',
       onClick: () => router.push('/dashboard/stake'),
       isActive: pathname === '/dashboard/stake',
     },

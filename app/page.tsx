@@ -13,8 +13,10 @@ import {
   Zap,
   ChevronDown,
   Star,
+  Activity
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import { ASSETS, STAKING_ASSETS, EARN_ASSETS, HOLD_ASSETS } from "@/lib/constants";
 
 // Dynamic import to avoid SSR issues with WebGL
 const RippleGrid = dynamic(() => import("@/components/RippleGrid"), {
@@ -180,8 +182,8 @@ export default function HomePage() {
             </h1>
 
             <p className="animate-slide-up animation-delay-200 mt-6 text-lg leading-8 text-muted-foreground text-pretty max-w-2xl mx-auto">
-              Secure, flexible staking for ETH, BTC, SOL, and XRP with competitive APYs. 
-              Start earning passive income today.
+              Secure, flexible staking for Proof-of-Stake assets and Yield generation for stablecoins.
+              Start earning passive income today with up to 20% APY.
             </p>
 
             <div className="animate-slide-up animation-delay-300 mt-10 flex items-center justify-center gap-4 flex-wrap">
@@ -289,35 +291,113 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
           <div className="mx-auto max-w-2xl text-center mb-16">
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              Supported Cryptocurrencies
+              Supported Assets
             </h2>
             <p className="mt-4 text-lg text-muted-foreground">
-              Stake your favorite assets with competitive returns
+              Diversify your portfolio with Staking, Earn, and Hold assets
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
-            {[
-              { name: "Ethereum", symbol: "ETH", apy: "Up to 150%", color: "from-blue-500/10 to-blue-500/5", border: "border-blue-500/20" },
-              { name: "Bitcoin", symbol: "BTC", apy: "Up to 120%", color: "from-orange-500/10 to-orange-500/5", border: "border-orange-500/20" },
-              { name: "Solana", symbol: "SOL", apy: "Up to 180%", color: "from-purple-500/10 to-purple-500/5", border: "border-purple-500/20" },
-              { name: "Ripple", symbol: "XRP", apy: "Up to 140%", color: "from-gray-400/10 to-gray-400/5", border: "border-gray-400/20" },
-            ].map((currency) => (
-              <div
-                key={currency.symbol}
-                className={`rounded-2xl border ${currency.border} bg-gradient-to-br ${currency.color} p-6 text-center hover-lift backdrop-blur-sm`}
-              >
-                <div className="text-3xl font-bold text-foreground">
-                  {currency.symbol}
+          <div className="space-y-12">
+            {/* Staking Assets */}
+            <div>
+              <div className="flex items-center gap-2 mb-6">
+                <Activity className="h-5 w-5 text-primary" />
+                <h3 className="text-xl font-semibold">Proof-of-Stake Assets</h3>
+              </div>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                {STAKING_ASSETS.map((symbol) => {
+                  const asset = ASSETS[symbol]
+                  return (
+                    <div
+                      key={symbol}
+                      className={`relative overflow-hidden rounded-2xl border ${asset.borderColor} bg-gradient-to-br ${asset.color} p-5 text-center hover-lift backdrop-blur-sm group`}
+                    >
+                      <div className="text-3xl font-bold text-foreground mb-1 group-hover:scale-110 transition-transform">
+                        {asset.icon}
+                      </div>
+                      <div className="font-semibold text-foreground">{symbol}</div>
+                      <div className="text-xs text-muted-foreground">{asset.name}</div>
+                      <div className="mt-3 inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
+                        Up to 20% APY
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Earn Assets */}
+            <div>
+              <div className="flex items-center gap-2 mb-6">
+                <TrendingUp className="h-5 w-5 text-emerald-500" />
+                <h3 className="text-xl font-semibold">Yield Products</h3>
+              </div>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                {EARN_ASSETS.map((symbol) => {
+                  const asset = ASSETS[symbol]
+                  return (
+                    <div
+                      key={symbol}
+                      className={`relative overflow-hidden rounded-2xl border ${asset.borderColor} bg-gradient-to-br ${asset.color} p-5 text-center hover-lift backdrop-blur-sm group`}
+                    >
+                      <div className="text-3xl font-bold text-foreground mb-1 group-hover:scale-110 transition-transform">
+                        {asset.icon}
+                      </div>
+                      <div className="font-semibold text-foreground">{symbol}</div>
+                      <div className="text-xs text-muted-foreground">{asset.name}</div>
+                      <div className="mt-3 inline-flex items-center rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-semibold text-emerald-500">
+                        Up to 12% Yield
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Coming Soon / Hold Assets */}
+            <div>
+              <div className="flex items-center gap-2 mb-6">
+                <Shield className="h-5 w-5 text-orange-500" />
+                <h3 className="text-xl font-semibold">Store of Value & Coming Soon</h3>
+              </div>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                {HOLD_ASSETS.map((symbol) => {
+                  const asset = ASSETS[symbol]
+                  return (
+                    <div
+                      key={symbol}
+                      className={`relative overflow-hidden rounded-2xl border ${asset.borderColor} bg-gradient-to-br ${asset.color} p-5 text-center hover-lift backdrop-blur-sm group`}
+                    >
+                      <div className="text-3xl font-bold text-foreground mb-1 group-hover:scale-110 transition-transform">
+                        {asset.icon}
+                      </div>
+                      <div className="font-semibold text-foreground">{symbol}</div>
+                      <div className="text-xs text-muted-foreground">{asset.name}</div>
+                      <div className="mt-3 inline-flex items-center rounded-full bg-orange-500/10 px-2.5 py-0.5 text-xs font-semibold text-orange-500">
+                        Hold Only
+                      </div>
+                    </div>
+                  )
+                })}
+                
+                {/* Coming Soon placeholders */}
+                <div className="relative overflow-hidden rounded-2xl border border-dashed border-border/50 bg-muted/20 p-5 text-center flex flex-col justify-center items-center">
+                   <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center mb-2">?</div>
+                   <div className="text-sm font-medium text-muted-foreground">Cardano</div>
+                   <div className="mt-2 inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+                     Coming Soon
+                   </div>
                 </div>
-                <div className="mt-1 text-sm text-muted-foreground">
-                  {currency.name}
-                </div>
-                <div className="mt-4 inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">
-                  {currency.apy}
+                <div className="relative overflow-hidden rounded-2xl border border-dashed border-border/50 bg-muted/20 p-5 text-center flex flex-col justify-center items-center">
+                   <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center mb-2">?</div>
+                   <div className="text-sm font-medium text-muted-foreground">Polygon</div>
+                   <div className="mt-2 inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+                     Coming Soon
+                   </div>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>

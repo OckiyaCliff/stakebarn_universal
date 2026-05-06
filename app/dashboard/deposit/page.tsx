@@ -2,7 +2,7 @@ import { DashboardHeader } from "@/components/dashboard-header"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { PLATFORM_WALLETS, CURRENCY_INFO, type Currency } from "@/lib/constants"
+import { ASSETS, DEPOSITABLE_ASSETS, type Currency } from "@/lib/constants"
 import { AlertCircle } from "lucide-react"
 import { WalletAddressCard } from "@/components/wallet-address-card"
 import { createClient } from "@/lib/supabase/server"
@@ -37,22 +37,25 @@ export default async function DepositPage() {
         </Alert>
 
         <Tabs defaultValue="ETH" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            {(Object.keys(PLATFORM_WALLETS) as Currency[]).map((currency) => (
-              <TabsTrigger key={currency} value={currency}>
+          <TabsList className="flex flex-wrap w-full h-auto p-1 gap-1 justify-start">
+            {DEPOSITABLE_ASSETS.map((currency) => (
+              <TabsTrigger key={currency} value={currency} className="flex-1 min-w-[80px]">
+                <span className="mr-1.5 opacity-70">{ASSETS[currency].icon}</span>
                 {currency}
               </TabsTrigger>
             ))}
           </TabsList>
 
-          {(Object.keys(PLATFORM_WALLETS) as Currency[]).map((currency) => (
-            <TabsContent key={currency} value={currency} className="space-y-4">
-              <WalletAddressCard currency={currency} address={PLATFORM_WALLETS[currency]} />
+          {DEPOSITABLE_ASSETS.map((currency) => {
+            const asset = ASSETS[currency]
+            return (
+            <TabsContent key={currency} value={currency} className="space-y-4 mt-4">
+              <WalletAddressCard currency={currency as Currency} address={asset.wallet} />
 
               <Card>
                 <CardHeader>
                   <CardTitle>Deposit Instructions</CardTitle>
-                  <CardDescription>Follow these steps to deposit {CURRENCY_INFO[currency].name}</CardDescription>
+                  <CardDescription>Follow these steps to deposit {asset.name}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
@@ -107,7 +110,8 @@ export default async function DepositPage() {
                 </CardContent>
               </Card>
             </TabsContent>
-          ))}
+            )
+          })}
         </Tabs>
 
         <DepositSubmissionForm />

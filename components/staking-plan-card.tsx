@@ -21,9 +21,10 @@ interface StakingPlanCardProps {
   plan: StakingPlan
   availableBalance: number
   userId: string
+  isEarn?: boolean
 }
 
-export function StakingPlanCard({ plan, availableBalance, userId }: StakingPlanCardProps) {
+export function StakingPlanCard({ plan, availableBalance, userId, isEarn = false }: StakingPlanCardProps) {
   const [dialogOpen, setDialogOpen] = useState(false)
   const isFlexible = plan.lockup_days === 0
   const minStake = Number.parseFloat(plan.min_stake.toString())
@@ -31,8 +32,8 @@ export function StakingPlanCard({ plan, availableBalance, userId }: StakingPlanC
 
   return (
     <>
-      <Card className="relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16" />
+      <Card className="relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110" />
         <CardHeader>
           <div className="flex items-start justify-between">
             <div className="space-y-1">
@@ -40,12 +41,12 @@ export function StakingPlanCard({ plan, availableBalance, userId }: StakingPlanC
               <CardDescription>{plan.currency}</CardDescription>
             </div>
             {isFlexible ? (
-              <Badge variant="outline" className="gap-1">
+              <Badge variant="outline" className="gap-1 border-emerald-500/30 text-emerald-500">
                 <Unlock className="h-3 w-3" />
                 Flexible
               </Badge>
             ) : (
-              <Badge variant="secondary" className="gap-1">
+              <Badge variant="secondary" className="gap-1 bg-primary/10 text-primary">
                 <Lock className="h-3 w-3" />
                 {plan.lockup_days}d
               </Badge>
@@ -56,17 +57,17 @@ export function StakingPlanCard({ plan, availableBalance, userId }: StakingPlanC
           <div className="space-y-2">
             <div className="flex items-baseline gap-2">
               <span className="text-4xl font-bold text-primary">{plan.apy}%</span>
-              <span className="text-sm text-muted-foreground">APY</span>
+              <span className="text-sm text-muted-foreground">{isEarn ? "Yield" : "APY"}</span>
             </div>
             <div className="flex items-center gap-1 text-sm text-muted-foreground">
               <TrendingUp className="h-4 w-4" />
-              <span>Annual Percentage Yield</span>
+              <span>{isEarn ? "Estimated Annual Yield" : "Annual Percentage Yield"}</span>
             </div>
           </div>
 
           <div className="space-y-2 pt-4 border-t border-border">
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Minimum Stake</span>
+              <span className="text-muted-foreground">Minimum {isEarn ? "Deposit" : "Stake"}</span>
               <span className="font-medium">
                 {minStake} {plan.currency}
               </span>
@@ -78,7 +79,7 @@ export function StakingPlanCard({ plan, availableBalance, userId }: StakingPlanC
           </div>
 
           <Button className="w-full" disabled={!canStake} onClick={() => setDialogOpen(true)}>
-            {!canStake ? "Insufficient Balance" : "Stake Now"}
+            {!canStake ? "Insufficient Balance" : isEarn ? "Earn Now" : "Stake Now"}
           </Button>
         </CardContent>
       </Card>
@@ -89,6 +90,7 @@ export function StakingPlanCard({ plan, availableBalance, userId }: StakingPlanC
         plan={plan}
         availableBalance={availableBalance}
         userId={userId}
+        isEarn={isEarn}
       />
     </>
   )

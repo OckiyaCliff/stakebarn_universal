@@ -14,20 +14,7 @@ import {
   ArrowUpRight,
 } from "lucide-react"
 import { getCryptoPrices } from "@/lib/crypto-prices"
-
-const currencyColors: Record<string, string> = {
-  ETH: "from-blue-500/15 to-blue-500/5 border-blue-500/20",
-  BTC: "from-orange-500/15 to-orange-500/5 border-orange-500/20",
-  SOL: "from-purple-500/15 to-purple-500/5 border-purple-500/20",
-  XRP: "from-gray-400/15 to-gray-400/5 border-gray-400/20",
-}
-
-const currencyIcons: Record<string, string> = {
-  ETH: "Ξ",
-  BTC: "₿",
-  SOL: "◎",
-  XRP: "✕",
-}
+import { ASSETS } from "@/lib/constants"
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -143,11 +130,13 @@ export default async function DashboardPage() {
               const stakedAmount = Number.parseFloat(balance.staked_balance.toString())
               const rewardsAmount = Number.parseFloat(balance.total_rewards.toString())
               const totalUsd = (availableAmount + stakedAmount) * price
-              const colorClass = currencyColors[balance.currency] || "from-gray-500/15 to-gray-500/5 border-gray-500/20"
-              const icon = currencyIcons[balance.currency] || "○"
+              const asset = ASSETS[balance.currency]
+              const colorClass = asset ? asset.color : "from-gray-500/15 to-gray-500/5"
+              const borderColor = asset ? asset.borderColor : "border-gray-500/20"
+              const icon = asset ? asset.icon : "○"
 
               return (
-                <Card key={balance.id} className={`bg-gradient-to-br ${colorClass} border`}>
+                <Card key={balance.id} className={`bg-gradient-to-br ${colorClass} border ${borderColor}`}>
                   <CardContent className="pt-5 pb-4">
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2">
@@ -214,7 +203,7 @@ export default async function DashboardPage() {
                     >
                       <div className="flex items-center gap-3">
                         <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-sm">
-                          {currencyIcons[stake.currency] || "○"}
+                          {ASSETS[stake.currency]?.icon || "○"}
                         </div>
                         <div>
                           <div className="font-medium text-sm">

@@ -23,9 +23,10 @@ interface StakeDialogProps {
   plan: StakingPlan
   availableBalance: number
   userId: string
+  isEarn?: boolean
 }
 
-export function StakeDialog({ open, onOpenChange, plan, availableBalance, userId }: StakeDialogProps) {
+export function StakeDialog({ open, onOpenChange, plan, availableBalance, userId, isEarn = false }: StakeDialogProps) {
   const [amount, setAmount] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -107,14 +108,14 @@ export function StakeDialog({ open, onOpenChange, plan, availableBalance, userId
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Stake {plan.currency}</DialogTitle>
+          <DialogTitle>{isEarn ? "Earn" : "Stake"} {plan.currency}</DialogTitle>
           <DialogDescription>{plan.name}</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">APY</span>
+              <span className="text-muted-foreground">{isEarn ? "Yield" : "APY"}</span>
               <span className="font-semibold text-primary">{plan.apy}%</span>
             </div>
             <div className="flex justify-between text-sm">
@@ -130,7 +131,7 @@ export function StakeDialog({ open, onOpenChange, plan, availableBalance, userId
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="amount">Amount to Stake</Label>
+            <Label htmlFor="amount">Amount to {isEarn ? "Deposit" : "Stake"}</Label>
             <Input
               id="amount"
               type="number"
@@ -212,7 +213,7 @@ export function StakeDialog({ open, onOpenChange, plan, availableBalance, userId
           {error && <p className="text-sm text-destructive">{error}</p>}
 
           <Button className="w-full" onClick={handleStake} disabled={isLoading || !amount}>
-            {isLoading ? "Creating Stake..." : "Confirm Stake"}
+            {isLoading ? "Processing..." : isEarn ? "Confirm Deposit" : "Confirm Stake"}
           </Button>
         </div>
       </DialogContent>

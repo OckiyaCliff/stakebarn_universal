@@ -11,7 +11,7 @@ import { ArrowDownUp, Loader2, Info, ArrowRight } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
-import { SWAP_FEE_PERCENT } from "@/lib/constants"
+import { SWAP_FEE_PERCENT, ALL_CURRENCIES } from "@/lib/constants"
 
 interface Balance {
   currency: string
@@ -139,7 +139,7 @@ export default function SwapPage() {
     }
   }
 
-  const currencies = ["ETH", "BTC", "SOL", "XRP"]
+  const currencies = ALL_CURRENCIES
 
   if (isLoading) {
     return (

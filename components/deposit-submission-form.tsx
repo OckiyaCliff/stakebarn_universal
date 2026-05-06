@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { CURRENCY_INFO, type Currency } from "@/lib/constants"
+import { ASSETS, DEPOSITABLE_ASSETS, type Currency } from "@/lib/constants"
 import { Upload, CheckCircle2, AlertCircle } from "lucide-react"
 
 export function DepositSubmissionForm() {
@@ -126,11 +126,14 @@ export function DepositSubmissionForm() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {(Object.keys(CURRENCY_INFO) as Currency[]).map((currency) => (
+                {DEPOSITABLE_ASSETS.map((currency) => {
+                  const asset = ASSETS[currency]
+                  return (
                   <SelectItem key={currency} value={currency}>
-                    {CURRENCY_INFO[currency].name} ({currency})
+                    {asset.icon} {asset.name} ({currency})
                   </SelectItem>
-                ))}
+                  )
+                })}
               </SelectContent>
             </Select>
           </div>

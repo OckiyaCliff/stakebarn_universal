@@ -12,6 +12,44 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "stakebarn-multi-asset-yield-expansion",
+    title: "Introducing Yield Products and Multi-Asset Expansion",
+    excerpt:
+      "StakeBarn now supports Earn assets alongside Staking assets. Diversify your portfolio with stablecoin yield generation and more PoS tokens.",
+    content: `
+# Introducing Yield Products and Multi-Asset Expansion
+
+We are thrilled to announce StakeBarn Universal's largest update yet: **Multi-Asset Expansion**.
+
+As the crypto ecosystem grows, so do the opportunities to earn passive income. We've redesigned our platform from the ground up to support a wider array of assets and clearly distinguish between Proof-of-Stake rewards and Yield-based products.
+
+## Staking vs. Earn
+
+We now categorize assets into two clear buckets:
+
+1. **Staking Assets (Proof-of-Stake)**: 
+   These are native tokens of PoS blockchains. When you stake these, you are helping secure the network.
+   *Supported: ETH, SOL, ATOM, DOT, AVAX, XRP*
+
+2. **Earn Assets (Yield Products)**:
+   These assets utilize advanced DeFi strategies to generate yield. This is perfect for stablecoins and non-PoS assets.
+   *Supported: USDT, USDC, XLM*
+
+## Why This Matters
+
+Diversification is key to a healthy crypto portfolio. You can now balance the higher, variable APYs of PoS networks with the steady, predictable yields of stablecoins—all from one secure dashboard.
+
+## What's Next?
+
+Our team is actively monitoring new networks and yield opportunities. Expect more assets to be added to both categories in the coming months!
+    `,
+    date: "May 6, 2026",
+    author: "StakeBarn Team",
+    category: "Platform Update",
+    readTime: "3 min read",
+    image: "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
     slug: "understanding-crypto-staking",
     title: "Understanding Crypto Staking: A Beginner's Guide",
     excerpt:
