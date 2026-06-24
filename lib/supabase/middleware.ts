@@ -102,8 +102,12 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  // Redirect to dashboard if authenticated and trying to access auth pages
-  if (user && (request.nextUrl.pathname.startsWith("/auth") || request.nextUrl.pathname === "/")) {
+  // Redirect to dashboard if authenticated and trying to access auth pages (excluding reset-password and callback)
+  const isExcludedAuthRoute = 
+    request.nextUrl.pathname === "/auth/reset-password" || 
+    request.nextUrl.pathname === "/auth/callback"
+
+  if (user && !isExcludedAuthRoute && (request.nextUrl.pathname.startsWith("/auth") || request.nextUrl.pathname === "/")) {
     const isAdmin = await checkIsAdmin(user.id)
 
     const url = request.nextUrl.clone()
