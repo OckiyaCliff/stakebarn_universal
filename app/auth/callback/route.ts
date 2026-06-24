@@ -32,10 +32,29 @@ export async function GET(request: Request) {
       }
     )
 
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
-    if (!error) {
-      // If this is a password recovery, redirect to the reset page
-      if (type === "recovery") {
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+    if (!error && data?.session) {
+      let isRecovery = type === "recovery"
+
+      // Fallback: Parse the JWT to check if authentication method was 'recovery'
+      try {
+        const token = data.session.access_token
+        if (token) {
+          const payloadBase64 = token.split(".")[1]
+          const payloadJson = Buffer.from(payloadBase64, "base64").toString("utf-8")
+          const payload = JSON.parse(payloadJson)
+          
+          if (payload.amr && Array.isArray(payload.amr)) {
+            isRecovery = isRecovery || payload.amr.some((m: any) => 
+              m === "recovery" || (m && typeof m === "object" && m.method === "recovery")
+            )
+          }
+        }
+      } catch (e) {
+        console.error("Error decoding session JWT:", e)
+      }
+
+      if (isRecovery) {
         return NextResponse.redirect(`${origin}/auth/reset-password`)
       }
       return NextResponse.redirect(`${origin}${next}`)

@@ -85,6 +85,16 @@ function FAQItem({ question, answer, isOpen, onClick }: { question: string; answ
 export default function HomePage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      const code = url.searchParams.get("code");
+      if (code) {
+        window.location.href = `/auth/callback?code=${code}`;
+      }
+    }
+  }, []);
+
   const stats = [
     { value: 50, suffix: "M+", label: "Total Value Staked" },
     { value: 25000, suffix: "+", label: "Active Stakers" },
