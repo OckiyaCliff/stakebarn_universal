@@ -86,7 +86,12 @@ export default function ResetPasswordPage() {
     return (
       <div className="flex min-h-screen w-full items-center justify-center p-6 md:p-10">
         <div className="w-full max-w-sm">
-          <div className="mb-8 text-center">
+          <div className="mb-8 text-center flex flex-col items-center">
+            <img
+              src="/stakebarn_logo.png"
+              alt="StakeBarn Logo"
+              className="h-12 w-auto mb-3 object-contain"
+            />
             <h1 className="text-2xl font-bold text-foreground">StakeBarn</h1>
             <p className="text-sm text-muted-foreground">Universal Staking Platform</p>
           </div>
@@ -122,7 +127,12 @@ export default function ResetPasswordPage() {
   return (
     <div className="flex min-h-screen w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm">
-        <div className="mb-8 text-center">
+        <div className="mb-8 text-center flex flex-col items-center">
+          <img
+            src="/stakebarn_logo.png"
+            alt="StakeBarn Logo"
+            className="h-12 w-auto mb-3 object-contain"
+          />
           <h1 className="text-2xl font-bold text-foreground">StakeBarn</h1>
           <p className="text-sm text-muted-foreground">Universal Staking Platform</p>
         </div>

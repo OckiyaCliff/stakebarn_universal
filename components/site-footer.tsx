@@ -88,7 +88,12 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-border pt-8">
+        <div className="mt-12 border-t border-border pt-8 flex flex-col items-center gap-4">
+          <img
+            src="/stakebarn_logo.png"
+            alt="StakeBarn Logo"
+            className="h-8 w-auto opacity-75 hover:opacity-100 transition-opacity object-contain"
+          />
           <p className="text-sm text-muted-foreground text-center">
             &copy; {new Date().getFullYear()} StakeBarn Universal. All rights reserved.
           </p>

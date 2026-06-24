@@ -33,7 +33,12 @@ export function SiteHeader({ variant = "solid" }: SiteHeaderProps) {
         >
           {/* Logo */}
           <div className="flex lg:flex-1">
-            <Link href="/" className="-m-1.5 p-1.5">
+            <Link href="/" className="-m-1.5 p-1.5 flex items-center gap-2">
+              <img
+                src="/stakebarn_logo.png"
+                alt="StakeBarn Logo"
+                className="h-8 w-auto object-contain"
+              />
               <span className="text-xl font-bold text-foreground">StakeBarn</span>
             </Link>
           </div>

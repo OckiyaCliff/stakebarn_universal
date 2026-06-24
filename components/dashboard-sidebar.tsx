@@ -30,7 +30,12 @@ export function DashboardSidebar() {
   return (
     <div className="flex h-full w-64 flex-col border-r border-sidebar-border bg-sidebar">
       {/* Logo */}
-      <div className="flex h-16 items-center border-b border-sidebar-border px-6">
+      <div className="flex h-16 items-center gap-2 border-b border-sidebar-border px-6">
+        <img
+          src="/stakebarn_logo.png"
+          alt="StakeBarn Logo"
+          className="h-7 w-auto object-contain"
+        />
         <h1 className="text-xl font-bold text-sidebar-foreground">StakeBarn</h1>
       </div>
 
